@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.turtywurty'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.esotericsoftware', name: 'kryo', version: '5.6.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+}
