@@ -2,8 +2,9 @@ plugins {
     id 'java'
 }
 
-group = 'dev.turtywurty'
+group = 'io.github.railroad'
 version = '1.0-SNAPSHOT'
+archivesBaseName = 'locomotive'
 
 repositories {
     mavenCentral()
