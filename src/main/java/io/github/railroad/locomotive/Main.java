@@ -70,7 +70,7 @@ public class Main {
 
                     PacketHandler packetHandler = packet.getPacketMethod().createPacket(version, packet.payload());
                     byte[] responseData = packetHandler.getResponse();
-                    PacketHelper.sendPacket(this.output, method, version, responseData);
+                    PacketHelper.sendPacket(this.output, version, method, responseData);
 
                     System.out.println("Response sent");
                 } catch (IOException exception) {

@@ -61,7 +61,7 @@ public class PacketHelper {
         writePayload(output, payload.getBytes());
     }
 
-    public static void sendPacket(OutputStream output, PacketMethod method, byte version, byte[] payload) throws IOException {
+    public static void sendPacket(OutputStream output, byte version, PacketMethod method, byte[] payload) throws IOException {
         writeStartMarker(output);
         writeByte(output, version);
         writePacketMethod(output, method);
@@ -70,7 +70,7 @@ public class PacketHelper {
     }
 
     public static void sendPacket(OutputStream output, byte version, PacketMethod method, String payload) throws IOException {
-        sendPacket(output, method, version, payload.getBytes());
+        sendPacket(output, version, method, payload.getBytes());
     }
 
     public static byte[] readByteArr(InputStream input, int length) throws IOException {
