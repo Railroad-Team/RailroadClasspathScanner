@@ -3,6 +3,7 @@ package io.github.railroad.locomotive.packet.impl;
 import io.github.railroad.locomotive.packet.PacketHandler;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class GetMethodsPacketHandler extends PacketHandler {
@@ -12,7 +13,7 @@ public class GetMethodsPacketHandler extends PacketHandler {
 
     @Override
     public byte[] getResponse() {
-        var name = new String(this.payload);
+        var name = new String(this.payload, StandardCharsets.UTF_8);
 
         try {
             Class<?> clazz = Class.forName(name);
@@ -30,9 +31,9 @@ public class GetMethodsPacketHandler extends PacketHandler {
                         .append(");");
             }
 
-            return response.toString().getBytes();
+            return response.toString().getBytes(StandardCharsets.UTF_8);
         } catch (ClassNotFoundException exception) {
-            return exception.getMessage().getBytes();
+            return exception.getMessage().getBytes(StandardCharsets.UTF_8);
         }
     }
 }

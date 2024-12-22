@@ -1,0 +1,20 @@
+<configuration>
+    <conversionRule conversionWord="customhighlight" class="io.github.railroad.locomotive.logback.HighlightingCompositeConverter" />
+
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %blue([%d{YYYY-MM-dd HH:mm:ss}]) %customhighlight([%t/%level]){thread} %cyan(\(%logger{0}\)) %customhighlight(%msg){msg}%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    <root level="WARN">
+        <appender-ref ref="CHANNEL"/>
+    </root>
+</configuration>

@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'edu.sc.seis.launch4j' version '3.0.6'
+    id 'com.gradleup.shadow' version '8.3.5'
 }
 
 group = 'io.github.railroad'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 archivesBaseName = 'locomotive'
 
 repositories {
@@ -11,6 +13,16 @@ repositories {
 }
 
 dependencies {
+    implementation group: "ch.qos.logback", name: "logback-classic", version: '1.5.12'
+    implementation group: "org.slf4j", name: "slf4j-api", version: '2.1.0-alpha1'
+
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
+}
+
+launch4j {
+    outfile = 'Locomotive.exe'
+    mainClassName = 'io.github.railroad.locomotive.Locomotive'
+    copyConfigurable = []
+    jarTask = project.tasks.shadowJar
 }
