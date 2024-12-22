@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.zip.CRC32C;
 
@@ -58,7 +59,7 @@ public class PacketHelper {
     }
 
     public static void writePayload(OutputStream output, String payload) throws IOException {
-        writePayload(output, payload.getBytes());
+        writePayload(output, payload.getBytes(StandardCharsets.UTF_8));
     }
 
     public static void sendPacket(OutputStream output, byte version, PacketMethod method, byte[] payload) throws IOException {
@@ -70,7 +71,7 @@ public class PacketHelper {
     }
 
     public static void sendPacket(OutputStream output, byte version, PacketMethod method, String payload) throws IOException {
-        sendPacket(output, version, method, payload.getBytes());
+        sendPacket(output, version, method, payload.getBytes(StandardCharsets.UTF_8));
     }
 
     public static byte[] readByteArr(InputStream input, int length) throws IOException {

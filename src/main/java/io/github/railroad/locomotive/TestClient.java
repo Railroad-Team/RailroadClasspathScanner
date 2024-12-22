@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public class TestClient {
     public static void main(String[] args) throws IOException {
-        var socket = new Socket("localhost", Main.PORT);
-        System.out.println("Connected to server");
+        var socket = new Socket("localhost", Locomotive.PORT);
+        Locomotive.LOGGER.info("Connected to server on port {}", Locomotive.PORT);
 
         OutputStream outputStream = socket.getOutputStream();
         PacketHelper.sendPacket(outputStream, Version.VERSION_1, PacketMethod.GET_FIELDS, "java.lang.String");
@@ -34,7 +34,7 @@ public class TestClient {
             Packet response = packetResponse.get();
             response.validate(Version.VERSION_1, PacketMethod.GET_FIELDS);
 
-            System.out.println("Received response: " + response);
+            Locomotive.LOGGER.info("Received response: {}", response);
             break;
         }
 

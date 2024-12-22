@@ -3,6 +3,8 @@ package io.github.railroad.locomotive;
 import io.github.railroad.locomotive.packet.PacketHandler;
 import io.github.railroad.locomotive.packet.Packet;
 import io.github.railroad.locomotive.packet.PacketMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,12 +13,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Optional;
 
-public class Main {
+public class Locomotive {
     public static final int PORT = 29687;
+    public static final Logger LOGGER = LoggerFactory.getLogger(Locomotive.class);
 
     public static void main(String[] args) {
         try (var serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Server started on port " + PORT);
+            LOGGER.info("Server started on port {}", PORT);
 
             while (serverSocket.isBound() && !serverSocket.isClosed()) {
                 Socket clientSocket = serverSocket.accept();
@@ -24,8 +27,7 @@ public class Main {
                 new Thread(new ClientHandler(clientSocket)).start();
             }
         } catch (IOException exception) {
-            System.err.println("Error starting server: " + exception.getMessage());
-            exception.printStackTrace();
+            LOGGER.error("Error starting server", exception);
         }
     }
 
@@ -47,7 +49,7 @@ public class Main {
 
         @Override
         public void run() {
-            System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
+            LOGGER.info("Client connected: {}", clientSocket.getInetAddress().getHostAddress());
             while (true) {
                 try {
                     while (input.available() == 0 && !clientSocket.isClosed()) {
@@ -66,16 +68,15 @@ public class Main {
 
                     byte version = packet.version();
                     PacketMethod method = packet.getPacketMethod();
-                    System.out.println("Received packet: " + method.getName() + " v" + version + " (" + packet.payloadLength() + " bytes)");
+                    LOGGER.info("Received packet: {} v{} ({} bytes)", method.getName(), version, packet.payloadLength());
 
                     PacketHandler packetHandler = packet.getPacketMethod().createPacket(version, packet.payload());
                     byte[] responseData = packetHandler.getResponse();
                     PacketHelper.sendPacket(this.output, version, method, responseData);
 
-                    System.out.println("Response sent");
+                    LOGGER.info("Sent response: {} v{} ({} bytes)", method.getName(), version, responseData.length);
                 } catch (IOException exception) {
-                    System.err.println("Error reading start marker: " + exception.getMessage());
-                    exception.printStackTrace();
+                    LOGGER.error("Error reading packet", exception);
                     break;
                 }
             }
@@ -83,8 +84,7 @@ public class Main {
             try {
                 clientSocket.close();
             } catch (IOException exception) {
-                System.err.println("Error closing client socket: " + exception.getMessage());
-                exception.printStackTrace();
+                LOGGER.error("Error closing client socket", exception);
             }
         }
     }

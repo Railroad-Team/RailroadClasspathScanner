@@ -15,7 +15,7 @@ public enum PacketMethod {
 
     public static final PacketMethod[] VALUES = PacketMethod.values();
 
-    private final String name = name().toLowerCase(Locale.ROOT);
+    private final String name = toString().toLowerCase(Locale.ROOT);
     private final int id;
     private final PacketHandler.PacketFactory factory;
 
